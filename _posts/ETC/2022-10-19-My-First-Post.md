@@ -1,6 +1,6 @@
 ---
 title: My First-Post
-categories: [ETC, Sub]
+categories: [ETC]
 tags: [first-posting]		# TAG는 반드시 소문자로 이루어져야함!
 ---
 
