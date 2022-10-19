@@ -1,6 +1,7 @@
 ---
 title: Why Kafka is fast?
 tags: [kafka, queue]
+date : 2022-10-19 00:00:00
 ---
 # Why Kafka is fast?
 
