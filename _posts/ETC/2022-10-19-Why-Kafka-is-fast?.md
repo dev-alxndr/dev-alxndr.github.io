@@ -12,11 +12,11 @@ tags: [kafka, queue]
 카프카는 높은 데이터 전송 처리를 위해 최적화 되었습니다.
 카프카는 많은 수의 레코드(데이터)를 짧은 시간에 처리하도록 디자인되었습니다.
 
-![직경이 큰 파이프에 액체가 많이 이동한다고 생각해보세요.](/_data/assets/images/Screen_Shot_2022-07-30_at_22.52.24.png)
+![직경이 큰 파이프에 액체가 많이 이동한다고 생각해보세요.](/_data/assets/img/Screen_Shot_2022-07-30_at_22.52.24.png)
 직경이 큰 파이프에 액체가 많이 이동한다고 생각해보세요.
 그래서 누군가 카프카가 빠르다고 말하면
 주로, 많은 데이터를 보내는 카프카의 성능을 말하는 것이다.
-![Screen Shot 2022-07-30 at 22.54.15.png](/_data/assets/images/Screen_Shot_2022-07-30_at_22.54.15.png)
+![Screen Shot 2022-07-30 at 22.54.15.png](/_data/assets/img/Screen_Shot_2022-07-30_at_22.54.15.png)
 
 어떠한 디자인 결정이 많은 데이터를 카프카가 효과적으로 처리할 수 있게 하였을까요?
 카프카의 성능을 위해 많은 컨트리뷰터가 디자인 결정을 했지만 두가지를 집중해보겠습니다.  
@@ -30,14 +30,14 @@ tags: [kafka, queue]
 1. Random Access Pattern
 	- 메모리에 랜덤하게 접근하는 방법
 	- 물리적으로 다른 위치로 이동합니다
-![Screen Shot 2022-07-30 at 23.03.58.png](/_data/assets/images/Screen_Shot_2022-07-30_at_23.03.58.png)
+![Screen Shot 2022-07-30 at 23.03.58.png](/_data/assets/img/Screen_Shot_2022-07-30_at_23.03.58.png)
 
   
 
 1. Sequential Access Pattern
 	- 메모리에 순차적으로 접근하는 방법
 	- 바로 다음 위치로 이동하여 Random Access Pattern 보다 빠릅니다.
-![Screen Shot 2022-07-30 at 23.04.51.png](/_data/assets/images/Screen_Shot_2022-07-30_at_23.04.51.png)
+![Screen Shot 2022-07-30 at 23.04.51.png](/_data/assets/img/Screen_Shot_2022-07-30_at_23.04.51.png)
 [개발자를 위한 SSD (Coding for SSD) - Part 5 : 접근 방법과 시스템 최적화](https://tech.kakao.com/2016/07/17/coding-for-ssd-part-5/)
 
 카프카는 Append-only log를 사용하여 Sequential Access Pattern의 이점을 가졌습니다.
@@ -52,13 +52,13 @@ tags: [kafka, queue]
 
 1. without Zero Copy Principle
 
-![Screen Shot 2022-07-30 at 23.13.50.png](/_data/assets/images/Screen_Shot_2022-07-30_at_23.13.50.png)
+![Screen Shot 2022-07-30 at 23.13.50.png](/_data/assets/img/Screen_Shot_2022-07-30_at_23.13.50.png)
 
 OS 레벨에서 4번의 복사와 2번의 시스템 호출이 이러납니다.
 
 2. with Zero Copy Principle
 
-![Screen Shot 2022-07-30 at 23.15.09.png](/_data/assets/images/Screen_Shot_2022-07-30_at_23.15.09.png)
+![Screen Shot 2022-07-30 at 23.15.09.png](/_data/assets/img/Screen_Shot_2022-07-30_at_23.15.09.png)
 
 첫번 째 Disk로부터 OS Buffer로 데이터를 로드하는 과정은 같습니다.
 
