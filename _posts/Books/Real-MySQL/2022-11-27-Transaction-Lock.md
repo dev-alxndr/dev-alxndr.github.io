@@ -90,7 +90,7 @@ MyISAM 스토리지 엔진에 비해 훨씬 뛰어난 동시성 처리를 제공
 ### InnoDB 스토리지 엔진의 잠금
 
 InnoDB 스토리지 엔진에서는 레코드 락뿐 아니라 레코드와 레코드 사이의 간격을 잠그는 갭(GAP)락이라는 것이 존재한다.
-![Untitled](/assets/img/untitled.png)
+![Untitled](/assets/img/Untitled.png)
 
 - 레코드 락
 레코드 자체만을 잠그는 것을 레코드 락이라 한다.
@@ -141,7 +141,7 @@ InnoDB 스토리지 엔진을 사용하는 테이블의 레코드 수준 잠금�
 - MySQL 8.0   
 `performance_schema` DB에 `data_locks`, `data_lock_waits` 테이블로 대체되고 있다.
 
-![Untitled](/assets/img/untitled1.png)
+![Untitled](/assets/img/Untitled1.png)
 
 ## MySQL 격리 수준
 [MySQL :: MySQL 8.0 Reference Manual :: 15.7.2.1 Transaction Isolation Levels](https://dev.mysql.com/doc/refman/8.0/en/innodb-transaction-isolation-levels.html)
@@ -170,7 +170,7 @@ COMMIT 된 데이터를 읽기 때문에 A 트랜잭션에서 한번 읽고 B �
 MySQL InnoDB 스토리지 엔진에서 기본으로 사용되는 격리 수준이다.
 `NON-REPEATABLE READ` 부정합이 발생하지 않는다. InnoDB 스토리지 엔진은 트랜잭션이 ROLLBACK될 가능성에 대비해 변경되기 전 레코드를 언두(Undo) 공간에 백업해두고 실제 레코드 값을 변경한다. 이러한 방식을 [MVCC](https://youtu.be/wiVvVanI3p4)라고 한다.
 장시간 트랜잭션을 종료하지 않으면 언두 영역이 백업된 데이터로 무한정 커질 수 있다. 언두에 백업된 레코드가 많아지면 MySQL 서버의 처리 성능이 떨어질 수 있다.
-![PHANTOM READ](/assets/img/untitled2.png)
+![PHANTOM READ](/assets/img/Untitled2.png)
 
 - PHANTOM READ   
 사용자 B는 `BEGIN` 명령으로 트랜잭션을 시작한 후 SELECT를 수행한다. 두 번의 SELECT 쿼리 결과는 같아야하지만 사용자 B가 실행하는 두 번의 `SELECT…FOR UPDATE` 쿼리 결과는 서로 다르다.
