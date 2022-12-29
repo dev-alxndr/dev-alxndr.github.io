@@ -197,7 +197,7 @@ exclude:
   - node_modules
   - package*.json
   - assets/templates/
-
+  - .obsidian/
 jekyll-archives:
   enabled: [categories, tags]
   layouts:
