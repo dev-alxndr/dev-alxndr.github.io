@@ -63,12 +63,10 @@ Algorithm=COPY : 1m 14sec
 
 운영 환경에서는 Mysql 8.0.23과 호환되는 Aurora를 사용하고 있어서 컬럼 위치 지정 불가
 
+[MySQL :: MySQL 8.0 Reference Manual :: 13.1.9 ALTER TABLE Statement-Performance and Space Requirements](https://dev.mysql.com/doc/refman/8.0/en/alter-table.html)
+
 [MySQL :: MySQL 8.0 Reference Manual :: 15.12.1 Online DDL Operations](https://dev.mysql.com/doc/refman/8.0/en/innodb-online-ddl-operations.html)
 
 [MySQL :: MySQL 8.0: InnoDB now supports Instant ADD COLUMN](https://dev.mysql.com/blog-archive/mysql-8-0-innodb-now-supports-instant-add-column/)
 
 [MySQL Online DDL - InnoDB Online DDL - Alter Online](https://hoing.io/archives/6693)
-
-[MySQL/MariaDB, 테이블 락 최소화하여 변경하기](https://jsonobject.tistory.com/515)
-
-[MySQL 8.0 Online DDL](https://dolphhong.tistory.com/229)
