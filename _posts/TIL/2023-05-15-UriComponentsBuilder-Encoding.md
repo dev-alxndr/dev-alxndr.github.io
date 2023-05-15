@@ -33,11 +33,11 @@ restTemplate.exchange(
 왜 저렇게 바꼈는지 코드를 확인해본다.   
 
 - `UriComponentsBuilder::build`
-![](Screenshot%202023-05-15%20at%2018.49.36.png)
+![](/assets/img/Screenshot%202023-05-15%20at%2018.49.36.png)
 	기존에 호출한 `.build()` 코드를 보면 `build(false)`를 호출하고 있다.
 
 - `UriComponentsBuilder::build(boolean encoded)`
-![](Screenshot%202023-05-15%20at%2018.50.08.png)
+![](/assets/img/Screenshot%202023-05-15%20at%2018.50.08.png)
 	주석을 읽어보면   
 	`encoded – whether all the components set in this builder are encoded (true) or not (false)` 
 	해당 URL이 Encoding이 되어있는지 안되어있는지를 알려주는 파라미터다.
