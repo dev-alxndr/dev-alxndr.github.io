@@ -31,7 +31,7 @@ Exclusive Lock을 획득하게됨
 
 이 때 다른 세션에서 같은 쿼리를 실행하게 되면 서로 Exclusive Lock 획득을 시도하기 떄문에 DeadLock이 발생함
 
-![](/asset/img/b5a3cee57687b989a680446721978936.png)
+![](/assets/img/b5a3cee57687b989a680446721978936.png)
 이렇게 2개의 Session을 열어서 아래 순서로 실행해보면 재현할 수 있다.
 
 순서
@@ -41,11 +41,11 @@ Exclusive Lock을 획득하게됨
 4. 또 다른 세션에서 update 를 실행
 
 위의 순서로 실행을 해보면 4번에서 deadlock이 발생하는 걸 확인할 수 있다.
-![](/asset/img/957b9c46917cadec4be2e99fcfd3a36f.png)
+![](/assets/img/957b9c46917cadec4be2e99fcfd3a36f.png)
 
 각 세션에서 Shared Lock을 잡고 Exclusive Lock으로 전환하려 할 때 서로의 Shared Lock을 내놓으라고 경합하기 때문이다.
 
-![](/asset/img/d9e37384c8d5a45cfd5eac199a0f80e5.png)
+![](/assets/img/d9e37384c8d5a45cfd5eac199a0f80e5.png)
 서로 Shared Lock 획득을 기다리다가 Deadlock이 터진다.
 
 > [!info] 
@@ -83,9 +83,9 @@ on duplicate key update age = c.age + 1;
 `~ for update` 구문을 사용하여 X락을 잡도록 한다.
 
 - S Lock
-	![](/asset/img/1a9a7e9b398d87b0b1aa493edf5e3d2b.png)
+	![](/assets/img/1a9a7e9b398d87b0b1aa493edf5e3d2b.png)
 	S Lock 이후에 X Lock을 잡았다.
 
 - for Update 적용
-	![](/asset/img/056e11f438b9dd9cdca25e67f7d781d3.png)
+	![](/assets/img/056e11f438b9dd9cdca25e67f7d781d3.png)
 	바로 X Lock이 잡힌걸 알 수 있다.
