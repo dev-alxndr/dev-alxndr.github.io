@@ -135,5 +135,3 @@ NAT 생성 옵션을 봤을 때 타임아웃을 지정하는 옵션이 없어서
 -  RestTemplate PoolingManager를 쓰지않고 SimpleManager를 사용한다.
 	- 매번 새롭게 handshake를 맺는다. (요청하는 서버가 고정이기 때문에 이 방법은 우리에게는 좋지 않아보인다.)
 - 또는 퍼블릭 망으로 빼도 된다면 서버를 퍼블릭으로 이동한다.
-
-[Connection Reset](Connection%20Reset.md)
