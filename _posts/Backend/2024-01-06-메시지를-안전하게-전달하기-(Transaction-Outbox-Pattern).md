@@ -1,0 +1,87 @@
+---
+title: 메시지를 안전하게 전달하기 (Transaction Outbox Pattern)
+tags:
+  - pattern
+  - backend
+categories:
+  - Backend
+date: 2024-01-06 18:51
+---
+
+결제 모듈에는 결제 결과를 각 서비스에 전달하는 기능이 있다.
+
+현재 메시지는 동기식으로 결제 완료 후 1회 전달되며, 각 서비스에서 콜백 처리 불가가 되더라도 재시도 해주지 않는다.
+> [!info]
+> PG사에서는 응답코드가 200이 아니면 결과 메시지를 재전송 해주고 있다.
+
+카드 결제, 네이버페이 등 동기로 작동하는 기능은 1회 동기로 전달하는게 맞는 것 같지만
+가상계좌 입금은 굳이 동기로 전달해줄 필요가 없어보인다.
+
+1회 실패 후 재전송 해주지 않는 것도 문제로 보인다.
+- 일반적으로 PG사는 결제 완료 콜백 시 에러 코드를 응답하면 몇번의 재시도를 해준다.
+
+현재 백엔드로 결과를 콜백해주고
+프론트로 리다이렉트를 하게 되는데 프론트에서도 결과를 저장하고 있다.
+- 프로에는 멱등성있게 처리가 되어 있어서 2번 결과 통보해도 문제가 없다.
+
+그렇다면 꼭 백엔드로 콜백을 동기로 해줄 필요가 있는가? 의문이 든다.
+많은 PG사를 분석했을 때는 보통 백엔드로 결과를 주지않고 리다이렉트 형식으로 결과를 주고 처리하도록 한다. 
+
+외부와 통신을 하는 경우에 다양한 문제가 있을 수 있다.
+- 네트워크 이슈
+- 서버 이슈
+- 휴먼 이슈
+
+#### 그러면 재시도 하면 되잖아요.
+![](/assets/img/2279f013c95d081a3ea63ff2bc63b42b.png)
+HTTP 요청을 재시도할 순 있지만 재시도하다가
+서버가 터지면 메시지는 사라지게 된다.
+
+### 메시지를 보내고 커밋하면요?
+![](/assets/img/1208346ffc42479fddb5637155126861.png)
+이렇게 메시지를 보내고 트랜잭션을 커밋한다면?
+메시지 전송 성공 후 트랜잭션이 실패한다면 메시지를 받는 쪽과 불일치가 발생하게 된다.
+
+이 때 등장하는 것이 있으니.
+## Transaction Outbox Pattern
+보통 MSA환경에서 메시지를 안전하게 전달할 때 많이 사용하는 패턴이다.
+*`Outbox` : 발신 편지함
+
+`At-Least Once Delivery` (적어도 한번 전달) 보장하기 위한 방법
+메시지 발행에 시차가 생길 수 있지만 `결과적 일관성(Eventual Consistency)`을 유지할 수 있다.
+
+해당 패턴으로 아래의 문제를 해결할 수 있다.
+1. 발행되어야 하는 메시지가 발행되지 않는다.
+2. 발행되지 말아야 하는 메시지가 발행된다.
+
+![](/assets/img/58ab03e5d25c8ab31206258742fd0921.png)
+##### 필요사항
+1. Outbox Table
+	![](/assets/img/a8d3c2c4c0ccb88f90a4db90406dc514.png)
+2. Outbox Table Polling Process
+	1. Polling Publisher
+	2. Transaction Log Tailing
+		1. [Debezium](https://debezium.io/)
+3. Message Broker (Kafka, SQS, HTTP)
+
+#### 메시지 순서
+메시지 마다 시퀀셜한 아이디를 부여해서, Polling Process에서 시퀀셜 아이디로 정렬 후 이벤트를 발행하면 메시지 순서를 맞출 수 있다.
+##### 주의사항
+- Outbox에 메시지를 저장하는 행위도 서비스 로직으로 본다.
+	- 메시지를 저장하다가 실패하면 결제 요청까지 롤백되고 실패로 봐야하는가 에 대한 답변
+- 메시지의 양이 많은 경우 Outbox테이블이 빠르게 커질 수 있기 때문에 일정 기간 이후에 삭제하는 프로세스를 만들어야할 수 도 있다.
+
+---
+### 관련
+[Transactional outbox](https://microservices.io/patterns/data/transactional-outbox.html)
+[Transaction log tailing](https://microservices.io/patterns/data/transaction-log-tailing.html)
+
+
+[[MSA 패턴] SAGA, Transactional Outbox 패턴 활용하기](https://devocean.sk.com/blog/techBoardDetail.do?ID=165445&boardType=techBlog)
+[분산 시스템에서 메시지 안전하게 다루기](https://blog.gangnamunni.com/post/transactional-outbox/)
+[MSA에서 메시징 트랜잭션 처리하기 | Popit](https://www.popit.kr/msa%EC%97%90%EC%84%9C-%EB%A9%94%EC%8B%9C%EC%A7%95-%ED%8A%B8%EB%9E%9C%EC%9E%AD%EC%85%98-%EC%B2%98%EB%A6%AC%ED%95%98%EA%B8%B0/)
+[Reliable Microservices Data Exchange With the Outbox Pattern](https://debezium.io/blog/2019/02/19/reliable-microservices-data-exchange-with-the-outbox-pattern/)
+[Microservices 101: Transactional Outbox and Inbox](https://softwaremill.com/microservices-101/)
+[Transactional outbox](https://microservices.io/patterns/data/transactional-outbox.html)
+[마이크로 서비스 통합. 안녕하세요 모두싸인에서 백엔드 개발을 하고 있는 루카스입니다. 이번… | by Ingyu Yoon | Modusign](https://team.modusign.co.kr/%EB%A7%88%EC%9D%B4%ED%81%AC%EB%A1%9C-%EC%84%9C%EB%B9%84%EC%8A%A4-%ED%86%B5%ED%95%A9-b08979275b59)
+[Transactional Outbox Pattern 알아보기](https://velog.io/@eastperson/Transaction-Outbox-Pattern-%EC%95%8C%EC%95%84%EB%B3%B4%EA%B8%B0)
