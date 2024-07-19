@@ -82,5 +82,5 @@ JPA Select를 하게되면 자동으로 Json을 원하는 타입으로 컨버팅
 
 ---
 ### References
-1. [엔티티의 필드 타입으로 JSON 사용하기](https://pika-chu.tistory.com/1296)
-2. [JPA @Converter](https://cherrypick.co.kr/jpa-converter/) / [JPA에 JSON 컬럼을 제네릭으로 유연하게 매핑하기](https://velog.io/@hong1008/jpa-json-converter)
+1. [엔티티의 필드 타입으로 JSON 사용하기](https://pika-chu.tistory.com/1296)    
+2. [JPA에 JSON 컬럼을 제네릭으로 유연하게 매핑하기](https://velog.io/@hong1008/jpa-json-converter)
